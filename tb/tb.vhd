@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.tp1_pkg.all;
 
 entity tb is
 end tb;
@@ -13,6 +14,10 @@ architecture sim of tb is
 
     signal clk, rst : std_logic := '0';
     signal done : std_logic; -- Assuming N=4
+
+    signal estado : t_semaforo_state;
+    signal semaforo1 : semaforo;
+    signal semaforo2 : semaforo;
 
 begin
 
@@ -34,6 +39,15 @@ begin
         port map (
             rst => rst,
             clk => clk
+        );
+
+    u_semaforo: entity work.semaforos
+        port map(
+            rst => rst,
+            clk => clk,
+            state => estado,
+            semaforo1 => semaforo1,
+            semaforo2 => semaforo2
         );
 
     -- Clock process
