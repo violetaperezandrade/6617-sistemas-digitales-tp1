@@ -1,2 +1,5 @@
-work/*
-!work/Makefile
+# Ignore everything under work/ directory
+work/simulation/*
+
+# But don't ignore the Makefile
+!work/simulation/Makefile
