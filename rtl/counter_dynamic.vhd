@@ -10,6 +10,7 @@ entity counter_dynamic is
     port(
         rst : in std_logic;
         clk : in std_logic;
+        enable : in std_logic;
         done : out std_logic
     );
 end counter_dynamic;
@@ -24,12 +25,14 @@ begin
             counter <= (others => '0');
             done <= '0';
         elsif clk = '1' and clk'event then
-            if counter = COUNTS-1 then
-                counter <= (others => '0');
-                done <= '1';
-            else
-                counter <= counter + 1;
-                done <= '0';
+            if (enable) then
+                if counter = COUNTS-1 then
+                    counter <= (others => '0');
+                    done <= '1';
+                else
+                    counter <= counter + 1;
+                    done <= '0';
+                end if;
             end if;
         end if;
     end process;

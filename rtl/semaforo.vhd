@@ -6,6 +6,10 @@ entity semaforos is
     port(
             rst             : in std_logic;
             clk             : in std_logic;
+            counter_3s_start: out std_logic;
+            counter_30s_start: out std_logic;
+            counter_3s_end: in std_logic;
+            counter_30s_end: in std_logic;
             state 	    : out t_semaforo_state;
             semaforo1       : out semaforo;
             semaforo2       : out semaforo
@@ -19,14 +23,42 @@ begin
     begin
         if rst='1' then
             state <= S0;
+            counter_30s_start <= '1';
         elsif clk = '1' and clk'event then
+            counter_30s_start <= '0';
+            counter_3s_start <= '0';
+            state <= state;
             case state is
-                when S0 => state <= S1;
-                when S1 => state <= S2;
-                when S2 => state <= S3;
-                when S3 => state <= S4;
-                when S4 => state <= S5;
-                when S5 => state <= S0;
+                when S0 =>
+                    if (counter_30s_end) then
+                        state <= S1;
+                        counter_3s_start <= '1';
+                    end if;
+                when S1 =>
+                    if (counter_3s_end) then
+                        state <= S2;
+                        counter_3s_start <= '1';
+                    end if;
+                when S2 =>
+                    if (counter_3s_end) then
+                        state <= S3;
+                        counter_30s_start <= '1';
+                    end if;
+                when S3 =>
+                    if (counter_30s_end) then
+                        state <= S4;
+                        counter_3s_start <= '1';
+                    end if;
+                when S4 =>
+                    if (counter_3s_end) then
+                        state <= S5;
+                        counter_3s_start <= '1';
+                    end if;
+                when S5 =>
+                    if (counter_3s_end) then
+                        state <= S0;
+                        counter_30s_start <= '1';
+                    end if;
             end case;
 
             sem1 <= (verde => '0', rojo => '0', amarillo => '0');

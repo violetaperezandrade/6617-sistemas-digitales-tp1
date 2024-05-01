@@ -8,12 +8,12 @@ end tb;
 
 architecture sim of tb is
 
-    constant CLK_PERIOD : time := 10 ms; -- Assuming a 100 MHz clock
-    constant COUNTER_PERIOD : time := 1e3 ms;
-    constant COUNTS : natural := COUNTER_PERIOD/CLK_PERIOD;
+    constant CLK_PERIOD : time := 100 ms;
+    constant TEST_TIME : time := 100 sec;
 
     signal clk, rst : std_logic := '0';
-    signal done : std_logic; -- Assuming N=4
+    signal counter_30s_end, counter_3s_end : std_logic;
+    signal counter_30s_start, counter_3s_start : std_logic;
 
     signal estado : t_semaforo_state;
     signal semaforo1 : semaforo;
@@ -21,23 +21,27 @@ architecture sim of tb is
 
 begin
 
-    counter_1s : entity work.counter_time
+    counter_3s : entity work.counter_time
         generic map (
             CLK_PERIOD => CLK_PERIOD,
-            COUNTER_PERIOD => 1e3 ms
+            COUNTER_PERIOD => 3 sec
         )
         port map (
             rst => rst,
+            start => counter_3s_start,
+            done => counter_3s_end,
             clk => clk
         );
 
-    counter_10s : entity work.counter_time
+    counter_30s : entity work.counter_time
         generic map (
             CLK_PERIOD => CLK_PERIOD,
-            COUNTER_PERIOD => 10e3 ms
+            COUNTER_PERIOD => 30 sec
         )
         port map (
             rst => rst,
+            start => counter_30s_start,
+            done => counter_30s_end,
             clk => clk
         );
 
@@ -47,13 +51,17 @@ begin
             clk => clk,
             state => estado,
             semaforo1 => semaforo1,
+            counter_30s_start => counter_30s_start,
+            counter_3s_start => counter_3s_start,
+            counter_30s_end => counter_30s_end,
+            counter_3s_end => counter_3s_end,
             semaforo2 => semaforo2
         );
 
     -- Clock process
     clk_process : process
     begin
-        while now < 21e3 ms loop
+        while now < TEST_TIME loop
             clk <= '0';
             wait for CLK_PERIOD / 2;
             clk <= '1';
