@@ -12,49 +12,19 @@ architecture sim of tb is
     constant TEST_TIME : time := 100 sec;
 
     signal clk, rst : std_logic := '0';
-    signal counter_30s_end, counter_3s_end : std_logic;
-    signal counter_30s_start, counter_3s_start : std_logic;
 
-    signal estado : t_semaforo_state;
     signal semaforo1 : semaforo;
     signal semaforo2 : semaforo;
-
 begin
 
-    counter_3s : entity work.counter_time
+    u_semaforos: entity work.semaforos
         generic map (
-            CLK_PERIOD => CLK_PERIOD,
-            COUNTER_PERIOD => 3 sec
+            CLK_PERIOD => CLK_PERIOD
         )
         port map (
-            rst => rst,
-            start => counter_3s_start,
-            done => counter_3s_end,
-            clk => clk
-        );
-
-    counter_30s : entity work.counter_time
-        generic map (
-            CLK_PERIOD => CLK_PERIOD,
-            COUNTER_PERIOD => 30 sec
-        )
-        port map (
-            rst => rst,
-            start => counter_30s_start,
-            done => counter_30s_end,
-            clk => clk
-        );
-
-    u_semaforo: entity work.semaforos
-        port map(
             rst => rst,
             clk => clk,
-            state => estado,
             semaforo1 => semaforo1,
-            counter_30s_start => counter_30s_start,
-            counter_3s_start => counter_3s_start,
-            counter_30s_end => counter_30s_end,
-            counter_3s_end => counter_3s_end,
             semaforo2 => semaforo2
         );
 

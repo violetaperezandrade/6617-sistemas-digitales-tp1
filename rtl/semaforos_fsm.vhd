@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use work.tp1_pkg.all;
 
-entity semaforos is
+entity semaforos_fsm is
     port(
             rst             : in std_logic;
             clk             : in std_logic;
@@ -14,9 +14,9 @@ entity semaforos is
             semaforo1       : out semaforo;
             semaforo2       : out semaforo
         );
-end semaforos;
+end semaforos_fsm;
 
-architecture behavioral of semaforos is
+architecture behavioral of semaforos_fsm is
     signal sem1, sem2 : semaforo;
 begin
     process(clk,rst)

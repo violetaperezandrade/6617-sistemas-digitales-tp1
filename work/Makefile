@@ -27,8 +27,9 @@ pkg_compile: $(PKG_SRCS)
 	ghdl -a --std=08 $(PKG_SRCS)
 
 # Compile the TB and RTL
+# Had to hardcode compilation order
 $(OUT): pkg_compile $(SRCS)
-	ghdl -a --std=08 $(RTL_SRCS)
+	ghdl -a --std=08 $(RTL_DIR)/counter_dynamic.vhd $(RTL_DIR)/counter_time.vhd $(RTL_DIR)/semaforos_fsm.vhd $(RTL_DIR)/semaforos.vhd
 	ghdl -a --std=08 $(TB_SRCS)
 	ghdl -e --std=08 $(TB_NAME)
 	ghdl -r --std=08 $(TB_NAME) --wave=$(WAVES)
