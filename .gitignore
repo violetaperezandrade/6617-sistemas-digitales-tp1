@@ -3,3 +3,5 @@ work/simulation/*
 
 # But don't ignore the Makefile
 !work/simulation/Makefile
+
+work/vivado/*

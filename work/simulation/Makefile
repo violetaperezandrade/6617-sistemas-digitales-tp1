@@ -7,7 +7,7 @@ WAVES = waves.ghw
 OUT = tb.out
 
 # Directories
-ROOT_DIR = ..
+ROOT_DIR = ../..
 RTL_DIR = $(ROOT_DIR)/rtl
 TB_DIR = $(ROOT_DIR)/tb
 
