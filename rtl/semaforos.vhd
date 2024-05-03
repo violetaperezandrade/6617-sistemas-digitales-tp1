@@ -4,7 +4,7 @@ use work.tp1_pkg.all;
 
 entity semaforos is
     generic (
-        constant CLK_PERIOD : time
+        constant CLK_PERIOD : time := 20 ns
     );
     port(
             rst             : in std_logic;
