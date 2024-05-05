@@ -5,3 +5,4 @@ work/simulation/*
 !work/simulation/Makefile
 
 work/vivado/*
+.DS_Store
